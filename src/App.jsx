@@ -22,8 +22,9 @@ function App() {
   })
   return (
     <main>
+    <Nav/>
       <Dock windowState={windowState} setWindowState={setWindowState} />
-      {windowState.Nav && <Nav windowName="Nav"       setWindowState={setWindowState} />}
+     
       {windowState.Github && <  Github windowName="Github"  setWindowState={setWindowState} />}
       {windowState.Note && <Note windowName="Note"  setWindowState={setWindowState} />}
       {windowState.Resume && <Resume windowName="Resume"  setWindowState={setWindowState} />}

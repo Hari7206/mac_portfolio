@@ -1,16 +1,66 @@
-# React + Vite
+# 💻 PortOS — macOS Style Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive portfolio designed like a mini operating system.
 
-Currently, two official plugins are available:
+Instead of a traditional scrolling website, this project recreates a **macOS-like desktop experience** where users can click icons, open apps, and explore content in separate windows.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+PortOS is a React-based portfolio that simulates a desktop environment.
 
-## Expanding the ESLint configuration
+Users can:
+- Open apps by clicking icons
+- Navigate through draggable-style windows
+- Access projects, resume, and contact options in a more engaging way
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Features
+
+### 🖥️ Desktop UI
+- macOS-inspired interface  
+- Icon-based navigation  
+- Window/tab system  
+
+### 📂 App System
+- Each icon behaves like an app  
+- Opens content in separate windows  
+
+### 📧 Gmail Integration
+- CLI / icon opens Gmail directly  
+
+### 📄 Resume Access
+- Resume available via PDF viewer  
+
+### 🎵 Spotify Player
+- Embedded playlist player  
+- Music plays directly inside the portfolio  
+
+### 🗂️ Project Explorer
+- Custom-built project showcase (not GitHub UI)  
+- Includes:
+  - Project name  
+  - Tech stack  
+  - Description  
+  - Links  
+
+---
+
+## 🛠️ Tech Stack
+
+- React.js  
+- JavaScript  
+- CSS / Tailwind CSS  
+- Custom window management logic  
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+npm install
+npm start

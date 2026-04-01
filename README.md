@@ -52,7 +52,7 @@ Users can:
 
 - React.js  
 - JavaScript  
-- CSS / Tailwind CSS  
+- CSS / Scss
 - Custom window management logic  
 
 ---

@@ -3,7 +3,7 @@ import githubData from '../../assets/github.json'
 import MacWindow from './MacWindow'
 import "./github.scss"
 
-function Github() {
+function Github({windowName, setWindowState}) {
     const GitCard = ({data = {id: 1 , image:"" , title:"" , description:"" , tags:[] , repoLink:"" ,demoLink:""}}) =>{
         return <div className="card">
             <img src={data.image} alt="" />
@@ -21,7 +21,7 @@ function Github() {
         </div>
     }
   return (
-  <MacWindow> 
+  <MacWindow  windowName={windowName} setWindowState={setWindowState}> 
     <div className="cards">
         {githubData.map(project => {
             return <GitCard data={project}/>

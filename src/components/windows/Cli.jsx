@@ -4,7 +4,7 @@ import { FitAddon } from 'xterm-addon-fit'
 import 'xterm/css/xterm.css'
 import MacWindow from './MacWindow'
 
-function Cli() {
+function Cli({windowName , setWindowState}) {
   const termRef = useRef(null)
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function Cli() {
   }, [])
 
   return (
-    <MacWindow>
+    <MacWindow  windowName={windowName} setWindowState={setWindowState}>
       <div ref={termRef} style={{ height: '100%', padding: '4px' }} />
     </MacWindow>
   )

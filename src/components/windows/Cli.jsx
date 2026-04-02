@@ -4,42 +4,302 @@ import { FitAddon } from 'xterm-addon-fit'
 import 'xterm/css/xterm.css'
 import MacWindow from './MacWindow'
 
-function Cli({windowName , setWindowState}) {
+const PORTFOLIO = {
+  name: 'Hari Thapa',
+  role: 'Full Stack Developer',
+  location: 'Kathmandu, Nepal',
+  email: 'hari@example.com',
+  github: 'github.com/harithapa',
+  linkedin: 'linkedin.com/in/harithapa',
+  website: 'harithapa.dev',
+  skills: {
+    frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+    backend: ['Node.js', 'Express', 'REST APIs', 'GraphQL'],
+    database: ['MongoDB', 'PostgreSQL', 'Redis'],
+    tools: ['Git', 'Docker', 'AWS', 'Figma', 'VS Code'],
+  },
+  projects: [
+    {
+      name: 'Portfolio OS',
+      desc: 'macOS-style interactive portfolio built with React',
+      tech: ['React', 'Xterm.js', 'Tailwind'],
+      url: 'github.com/harithapa/portfolio-os',
+    },
+    {
+      name: 'DevConnect',
+      desc: 'Social platform for developers to share projects',
+      tech: ['Next.js', 'MongoDB', 'Socket.io'],
+      url: 'github.com/harithapa/devconnect',
+    },
+    {
+      name: 'TaskFlow',
+      desc: 'Kanban-style project management tool',
+      tech: ['React', 'Node.js', 'PostgreSQL'],
+      url: 'github.com/harithapa/taskflow',
+    },
+  ],
+  experience: [
+    { role: 'Frontend Developer', company: 'TechNepal Pvt. Ltd.', period: '2023 – Present' },
+    { role: 'React Intern', company: 'StartupKTM', period: '2022 – 2023' },
+  ],
+  education: [
+    { degree: 'B.Sc. Computer Science', school: 'Tribhuvan University', year: '2019 – 2023' },
+  ],
+}
+
+const C = {
+  green:   (s) => `\x1b[32m${s}\x1b[0m`,
+  cyan:    (s) => `\x1b[36m${s}\x1b[0m`,
+  yellow:  (s) => `\x1b[33m${s}\x1b[0m`,
+  magenta: (s) => `\x1b[35m${s}\x1b[0m`,
+  blue:    (s) => `\x1b[34m${s}\x1b[0m`,
+  bold:    (s) => `\x1b[1m${s}\x1b[0m`,
+  dim:     (s) => `\x1b[2m${s}\x1b[0m`,
+  red:     (s) => `\x1b[31m${s}\x1b[0m`,
+}
+
+function buildCommands(term) {
+  return {
+    help: () => {
+      term.writeln('')
+      term.writeln(C.cyan('╔══════════════════════════════════════════╗'))
+      term.writeln(C.cyan('║') + C.bold('         Available Commands               ') + C.cyan('║'))
+      term.writeln(C.cyan('╚══════════════════════════════════════════╝'))
+      const cmds = [
+        ['whoami',     'About me — name, role & location'],
+        ['skills',     'My technical skills & stack'],
+        ['projects',   'Projects I have built'],
+        ['experience', 'Work experience timeline'],
+        ['education',  'Academic background'],
+        ['contact',    'Ways to reach me'],
+        ['social',     'GitHub, LinkedIn & website links'],
+        ['banner',     'Show the welcome banner again'],
+        ['clear',      'Clear the terminal'],
+        ['help',       'Show this help menu'],
+      ]
+      cmds.forEach(([cmd, desc]) => {
+        term.writeln(`  ${C.green(cmd.padEnd(12))} ${C.dim('→')} ${desc}`)
+      })
+      term.writeln('')
+    },
+
+    whoami: () => {
+      term.writeln('')
+      term.writeln(C.bold(C.yellow('  👤 ' + PORTFOLIO.name)))
+      term.writeln(`  ${C.cyan('Role     ')}  ${PORTFOLIO.role}`)
+      term.writeln(`  ${C.cyan('Location ')}  ${PORTFOLIO.location}`)
+      term.writeln(`  ${C.cyan('Website  ')}  ${PORTFOLIO.website}`)
+      term.writeln('')
+    },
+
+    skills: () => {
+      term.writeln('')
+      term.writeln(C.bold(C.yellow('  🛠  Technical Skills')))
+      Object.entries(PORTFOLIO.skills).forEach(([cat, list]) => {
+        term.writeln(`  ${C.cyan(cat.padEnd(10))}  ${list.map(s => C.green(s)).join(C.dim('  •  '))}`)
+      })
+      term.writeln('')
+    },
+
+    projects: () => {
+      term.writeln('')
+      term.writeln(C.bold(C.yellow('  🚀 Projects')))
+      PORTFOLIO.projects.forEach((p, i) => {
+        term.writeln(`  ${C.magenta(`[${i + 1}]`)} ${C.bold(p.name)}`)
+        term.writeln(`      ${C.dim(p.desc)}`)
+        term.writeln(`      ${C.cyan('Tech:')} ${p.tech.join(', ')}`)
+        term.writeln(`      ${C.cyan('URL :')} ${C.blue(p.url)}`)
+        term.writeln('')
+      })
+    },
+
+    experience: () => {
+      term.writeln('')
+      term.writeln(C.bold(C.yellow('  💼 Work Experience')))
+      PORTFOLIO.experience.forEach((e) => {
+        term.writeln(`  ${C.green('▸')} ${C.bold(e.role)}`)
+        term.writeln(`    ${C.cyan(e.company)}  ${C.dim(e.period)}`)
+        term.writeln('')
+      })
+    },
+
+    education: () => {
+      term.writeln('')
+      term.writeln(C.bold(C.yellow('  🎓 Education')))
+      PORTFOLIO.education.forEach((e) => {
+        term.writeln(`  ${C.green('▸')} ${C.bold(e.degree)}`)
+        term.writeln(`    ${C.cyan(e.school)}  ${C.dim(e.year)}`)
+      })
+      term.writeln('')
+    },
+
+    contact: () => {
+      term.writeln('')
+      term.writeln(C.bold(C.yellow('  📬 Contact')))
+      term.writeln(`  ${C.cyan('Email    ')}  ${C.green(PORTFOLIO.email)}`)
+      term.writeln(`  ${C.cyan('GitHub   ')}  ${C.blue(PORTFOLIO.github)}`)
+      term.writeln(`  ${C.cyan('LinkedIn ')}  ${C.blue(PORTFOLIO.linkedin)}`)
+      term.writeln('')
+    },
+
+    social: () => {
+      term.writeln('')
+      term.writeln(C.bold(C.yellow('  🌐 Social & Links')))
+      term.writeln(`  ${C.magenta('GitHub   ')}  ${C.blue(PORTFOLIO.github)}`)
+      term.writeln(`  ${C.magenta('LinkedIn ')}  ${C.blue(PORTFOLIO.linkedin)}`)
+      term.writeln(`  ${C.magenta('Website  ')}  ${C.blue(PORTFOLIO.website)}`)
+      term.writeln('')
+    },
+
+    banner: (term) => {
+      printBanner(term)
+    },
+
+    clear: (term) => {
+      term.clear()
+    },
+  }
+}
+
+function printBanner(term) {
+  term.writeln(C.green("  ██╗  ██╗ █████╗ ██████╗ ██╗"))
+  term.writeln(C.green("  ██║  ██║██╔══██╗██╔══██╗██║"))
+  term.writeln(C.green("  ███████║███████║██████╔╝██║"))
+  term.writeln(C.green("  ██╔══██║██╔══██║██╔══██╗██║"))
+  term.writeln(C.green("  ██║  ██║██║  ██║██║  ██║██║"))
+  term.writeln(C.green("  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝"))
+  term.writeln('')
+  term.writeln(`  ${C.bold(C.yellow(PORTFOLIO.name))}  ${C.dim('—')}  ${PORTFOLIO.role}`)
+  term.writeln(`  ${C.dim('Type')} ${C.cyan('help')} ${C.dim('to see all available commands.')}`)
+  term.writeln('')
+}
+
+function Cli({ windowName, setWindowState }) {
   const termRef = useRef(null)
 
   useEffect(() => {
-    const term = new Terminal({ theme: { background: '#1e1e1e' } })
+    const term = new Terminal({
+      theme: {
+        background: '#0d1117',
+        foreground: '#c9d1d9',
+        cursor: '#58a6ff',
+        selectionBackground: '#264f78',
+      },
+      fontFamily: '"JetBrains Mono", "Fira Code", monospace',
+      fontSize: 13,
+      lineHeight: 1.5,
+      cursorBlink: true,
+    })
+
     const fitAddon = new FitAddon()
     term.loadAddon(fitAddon)
     term.open(termRef.current)
-    fitAddon.fit()
-    term.writeln("Welcome to the Thapa's terminal!")
-    term.write('Hari@:~$ ')
 
+    // Defer first fit so DOM is fully painted before xterm measures the container
+    requestAnimationFrame(() => fitAddon.fit())
+
+    // ResizeObserver refits the xterm viewport whenever the container changes size
+    const ro = new ResizeObserver(() => fitAddon.fit())
+    ro.observe(termRef.current)
+
+    printBanner(term)
+    term.write(C.green('Hari') + C.dim('@') + C.cyan('portfolio') + C.dim(':~$ '))
+
+    const commands = buildCommands(term)
     let input = ''
+    let historyList = []
+    let historyIndex = -1
+
     term.onKey(({ key, domEvent }) => {
-      if (domEvent.key === 'Enter') {
+      const code = domEvent.key
+
+      if (code === 'Enter') {
         term.writeln('')
-        term.writeln(`command: ${input}`)
+        const cmd = input.trim().toLowerCase()
+
+        if (cmd) {
+          historyList.unshift(cmd)
+          historyIndex = -1
+
+          if (commands[cmd]) {
+            commands[cmd](term)
+          } else if (cmd === '') {
+            // do nothing
+          } else {
+            term.writeln(C.red(`  command not found: ${cmd}`) + C.dim('  (try "help")'))
+            term.writeln('')
+          }
+        }
+
         input = ''
-        term.write('me@React:~$ ')
-      } else if (domEvent.key === 'Backspace') {
+        term.write(C.green('Hari') + C.dim('@') + C.cyan('portfolio') + C.dim(':~$ '))
+
+      } else if (code === 'Backspace') {
         if (input.length > 0) {
           input = input.slice(0, -1)
           term.write('\b \b')
         }
-      } else {
+
+      } else if (code === 'ArrowUp') {
+        if (historyIndex < historyList.length - 1) {
+          historyIndex++
+          term.write('\b \b'.repeat(input.length))
+          input = historyList[historyIndex] || ''
+          term.write(input)
+        }
+
+      } else if (code === 'ArrowDown') {
+        if (historyIndex > 0) {
+          historyIndex--
+          term.write('\b \b'.repeat(input.length))
+          input = historyList[historyIndex] || ''
+          term.write(input)
+        } else {
+          historyIndex = -1
+          term.write('\b \b'.repeat(input.length))
+          input = ''
+        }
+
+      } else if (code === 'Tab') {
+        domEvent.preventDefault()
+        const partial = input.trim().toLowerCase()
+        const matches = Object.keys(commands).filter(c => c.startsWith(partial))
+        if (matches.length === 1) {
+          term.write('\b \b'.repeat(input.length))
+          input = matches[0]
+          term.write(input)
+        } else if (matches.length > 1) {
+          term.writeln('')
+          term.writeln(C.dim('  ' + matches.join('   ')))
+          term.write(C.green('Hari') + C.dim('@') + C.cyan('portfolio') + C.dim(':~$ ') + input)
+        }
+
+      } else if (key.length === 1) {
         input += key
         term.write(key)
       }
     })
 
-    return () => term.dispose()
+    // Cleanup: disconnect ResizeObserver and dispose terminal
+    return () => {
+      ro.disconnect()
+      term.dispose()
+    }
   }, [])
 
   return (
-    <MacWindow  windowName={windowName} setWindowState={setWindowState}>
-      <div ref={termRef} style={{ height: '100%', padding: '4px' }} />
+    <MacWindow windowName={windowName} setWindowState={setWindowState}>
+      <div className='cli'
+        ref={termRef}
+        style={{
+          height: '100%',
+          width: '100%',
+          padding: '4px',
+          backgroundColor: '#0d1117',
+          boxSizing: 'border-box',
+         marginBottom: '100px'
+        }}
+      />
     </MacWindow>
   )
 }

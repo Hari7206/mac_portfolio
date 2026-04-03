@@ -7,44 +7,54 @@ import MacWindow from './MacWindow'
 const PORTFOLIO = {
   name: 'Hari Thapa',
   role: 'Full Stack Developer',
-  location: 'Kathmandu, Nepal',
-  email: 'hari@example.com',
-  github: 'github.com/harithapa',
-  linkedin: 'linkedin.com/in/harithapa',
-  website: 'harithapa.dev',
+  location: 'Gurgaon, India',
+  email: 'harithapa4654@gmail.com',
+  github: 'https://github.com/Hari7206',
+  linkedin: 'https://www.linkedin.com/in/hari-thapa-67827835b/',
+  website: 'https://react-work-tan.vercel.app/',
   skills: {
     frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
     backend: ['Node.js', 'Express', 'REST APIs', 'GraphQL'],
-    database: ['MongoDB', 'PostgreSQL', 'Redis'],
-    tools: ['Git', 'Docker', 'AWS', 'Figma', 'VS Code'],
+    database: ['MongoDB',],
+    tools: ['Git', 'Figma', 'VS Code'],
   },
-  projects: [
-    {
-      name: 'Portfolio OS',
-      desc: 'macOS-style interactive portfolio built with React',
-      tech: ['React', 'Xterm.js', 'Tailwind'],
-      url: 'github.com/harithapa/portfolio-os',
-    },
-    {
-      name: 'DevConnect',
-      desc: 'Social platform for developers to share projects',
-      tech: ['Next.js', 'MongoDB', 'Socket.io'],
-      url: 'github.com/harithapa/devconnect',
-    },
-    {
-      name: 'TaskFlow',
-      desc: 'Kanban-style project management tool',
-      tech: ['React', 'Node.js', 'PostgreSQL'],
-      url: 'github.com/harithapa/taskflow',
-    },
-  ],
-  experience: [
-    { role: 'Frontend Developer', company: 'TechNepal Pvt. Ltd.', period: '2023 – Present' },
-    { role: 'React Intern', company: 'StartupKTM', period: '2022 – 2023' },
-  ],
-  education: [
-    { degree: 'B.Sc. Computer Science', school: 'Tribhuvan University', year: '2019 – 2023' },
-  ],
+ projects: [
+  {
+    name: 'PokeFlux',
+    desc: 'A dynamic Pokémon explorer built with React that fetches data from an external API and displays it in a randomized card layout on every refresh.',
+    tech: ['React.js', 'JavaScript (ES6+)', 'SCSS', 'REST API', 'Dynamic UI'],
+    url: 'https://github.com/hari7206/pokeflux',
+  },
+  {
+    name: 'ShopFlow',
+    desc: 'A React-based e-commerce prototype using Context API for state management and React Router for dynamic product navigation and detail pages.',
+    tech: ['React.js', 'Context API', 'React Router', 'REST API', 'State Management'],
+    url: 'https://github.com/hari7206/shopflow',
+  },
+  {
+    name: 'FocusOS',
+    desc: 'An all-in-one productivity dashboard featuring a todo list, pomodoro timer, daily planner, goal tracker, and weather widget in a unified interface.',
+    tech: ['JavaScript (ES6)', 'HTML5', 'CSS3', 'Dashboard UI', 'Productivity Tools'],
+    url: 'https://github.com/hari7206/focusos',
+  },
+  {
+    name: 'KeyWave',
+    desc: 'An interactive virtual piano built with HTML, CSS, and JavaScript that allows users to play notes via keyboard or mouse with real-time feedback.',
+    tech: ['JavaScript (ES6)', 'HTML5', 'CSS3', 'DOM Manipulation', 'Interactive UI'],
+    url: 'https://github.com/hari7206/keywave',
+  }
+],
+  // experience: [
+  //   { role: 'Frontend Developer', company: 'TechNepal Pvt. Ltd.', period: '2023 – Present' },
+  //   { role: 'React Intern', company: 'StartupKTM', period: '2022 – 2023' },
+  // ],
+ education: [
+  {
+    degree: 'Bachelor of Computer Applications (BCA)',
+    school: 'ST ANDREWS INSTITUTE OF TECHNOLOGY & MANAGEMENT',
+    year: '2024 – Present'
+  }
+],
 }
 
 const C = {
@@ -189,16 +199,15 @@ function Cli({ windowName, setWindowState }) {
       fontSize: 13,
       lineHeight: 1.5,
       cursorBlink: true,
+      scrollback: 1000,       
     })
 
     const fitAddon = new FitAddon()
     term.loadAddon(fitAddon)
     term.open(termRef.current)
 
-    // Defer first fit so DOM is fully painted before xterm measures the container
     requestAnimationFrame(() => fitAddon.fit())
 
-    // ResizeObserver refits the xterm viewport whenever the container changes size
     const ro = new ResizeObserver(() => fitAddon.fit())
     ro.observe(termRef.current)
 
@@ -223,9 +232,7 @@ function Cli({ windowName, setWindowState }) {
 
           if (commands[cmd]) {
             commands[cmd](term)
-          } else if (cmd === '') {
-            // do nothing
-          } else {
+          } else if (cmd !== '') {
             term.writeln(C.red(`  command not found: ${cmd}`) + C.dim('  (try "help")'))
             term.writeln('')
           }
@@ -233,6 +240,7 @@ function Cli({ windowName, setWindowState }) {
 
         input = ''
         term.write(C.green('Hari') + C.dim('@') + C.cyan('portfolio') + C.dim(':~$ '))
+        term.scrollToBottom()   
 
       } else if (code === 'Backspace') {
         if (input.length > 0) {
@@ -280,7 +288,6 @@ function Cli({ windowName, setWindowState }) {
       }
     })
 
-    // Cleanup: disconnect ResizeObserver and dispose terminal
     return () => {
       ro.disconnect()
       term.dispose()
@@ -289,17 +296,30 @@ function Cli({ windowName, setWindowState }) {
 
   return (
     <MacWindow windowName={windowName} setWindowState={setWindowState}>
-      <div className='cli'
-        ref={termRef}
+      <div
         style={{
           height: '100%',
           width: '100%',
-          padding: '4px',
           backgroundColor: '#0d1117',
           boxSizing: 'border-box',
-         marginBottom: '100px'
+          display: 'flex',
+          flexDirection: 'column',
+          paddingBottom: '10px',   
         }}
-      />
+      >
+        <div
+          ref={termRef}
+          style={{
+            flex: 1,
+            minHeight: 0,        
+            width: '100%',
+            paddingLeft: '4px',
+            paddingRight: '4px',
+            paddingTop: '4px',
+            boxSizing: 'border-box',
+          }}
+        />
+      </div>
     </MacWindow>
   )
 }
